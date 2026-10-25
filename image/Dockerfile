@@ -62,8 +62,9 @@ RUN rm -f /etc/dpkg/dpkg.cfg.d/excludes \
     && rm -f /usr/bin/pebble \
     && rm -rf /var/lib/apt/lists/*
 
-# (/usr/bin/pebble, removed above, is a Let's Encrypt ACME test server written in Go. It comes in as a dependency of
-# one of the packages, nothing here runs it, and the Trivy scan of the pipeline fails on the open CVEs in its Go
+# (/usr/bin/pebble, removed above, is a Go binary that no dpkg package owns ("dpkg -S" finds nothing), so it is not
+# one of our dependencies; it presumably comes with the base image (the name suggests Canonical's Pebble service
+# manager, not verified). Nothing here runs it, and the Trivy scan of the pipeline fails on the open CVEs in its Go
 # standard library. Same reasoning as removing fixuid in Online-IDE.)
 #
 # The platform runs the pod as UID 1000. The base image may ship a default user with that ID: replace it, so that the
