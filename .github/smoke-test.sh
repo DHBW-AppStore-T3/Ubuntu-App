@@ -46,6 +46,9 @@ for c in python3 pip3 node npm git curl wget tree htop nano vim awk man info les
   command -v "$c" >/dev/null || fail "missing command: $c"
 done
 python3 --version; node --version; npm --version; git --version
+# GNU coreutils, not the Rust ones Ubuntu 26.04 uses by default: the course and its man pages are GNU.
+version=$(cat --version); grep -q 'GNU coreutils' <<<"$version" || fail "cat is not GNU coreutils: $(head -1 <<<"$version")"
+version=$(sort --version); grep -q 'GNU coreutils' <<<"$version" || fail "sort is not GNU coreutils"
 out=$(python3 -m venv "$HOME/venv" && "$HOME/venv/bin/python" -c 'print("hello-venv")')
 [ "$out" = hello-venv ] || fail "python venv"
 [ "$(npm config get prefix)" = /home/student/.npm-global ] || fail "npm prefix"
@@ -67,7 +70,8 @@ if ! grep -qi concatenate <<<"$page"; then
   echo "--- man cat printed:"; head -20 <<<"$page"
   echo "--- cat is:"; readlink -f "$(command -v cat)"; dpkg -S "$(readlink -f "$(command -v cat)")" || true
   echo "--- packages:"; dpkg -l | grep -E 'coreutils|findutils|diffutils|man-db|manpages' || true
-  echo "--- man pages of section 1:"; ls /usr/share/man/man1 | head -20; ls /usr/share/man/man1 | wc -l
+  echo "--- man is:"; readlink -f "$(command -v man)"; ls -la /usr/share/man/man1/cat.1* || true
+  echo "--- man pages of section 1:"; ls /usr/share/man/man1 | wc -l
   fail "man cat"
 fi
 page=$(man bash 2>&1 || true); grep -q echo <<<"$page" || { head -20 <<<"$page"; fail "man bash"; }

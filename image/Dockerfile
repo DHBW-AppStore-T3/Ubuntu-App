@@ -10,8 +10,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 # reference sheet uses (man pages, info, less, ps/top/free, ip, ping), gawk for the lecturer's awk exercise, bash
 # completion for the TAB tip, and the terminal itself (ttyd, dtach).
 #
-# Ubuntu's container image strips the man pages (dpkg path-exclude); the exercises rely on "man cat" and "man bash".
-# Packages that are already in the base image have to be reinstalled to get their pages back.
+# Ubuntu's container image is minimized in two ways that matter here, and "unminimize" undoes both:
+# - it strips the man pages (dpkg path-exclude) and diverts /usr/bin/man to a stub that only prints a notice. The
+#   exercises rely on "man cat" and "man bash". Packages that are already in the image have to be reinstalled to get
+#   their pages back, and the diversion has to be removed once man-db is installed.
+# - Ubuntu 26.04 uses uutils (Rust) coreutils by default. The course, its man pages and the old VM version (Ubuntu
+#   22.04) are GNU, so the GNU provider is switched on (coreutils-from-gnu; the uutils one has to be removed with it).
 RUN rm -f /etc/dpkg/dpkg.cfg.d/excludes \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -42,14 +46,19 @@ RUN rm -f /etc/dpkg/dpkg.cfg.d/excludes \
         tzdata \
         vim \
         wget \
+    && apt-get install -y --no-install-recommends --allow-remove-essential \
+        coreutils-from-gnu \
+        coreutils-from-uutils- \
     && apt-get install -y --reinstall --no-install-recommends \
         bash \
-        coreutils \
         diffutils \
         findutils \
+        gnu-coreutils \
         grep \
         sed \
         util-linux \
+    && rm -f /usr/bin/man \
+    && dpkg-divert --quiet --remove --rename /usr/bin/man \
     && rm -rf /var/lib/apt/lists/*
 
 # The platform runs the pod as UID 1000. The base image may ship a default user with that ID: replace it, so that the
