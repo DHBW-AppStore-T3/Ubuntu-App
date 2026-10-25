@@ -62,8 +62,15 @@ done
 
 # Exercise 1 (man, cat) and 2 (echo, wc). The container image strips man pages unless the Dockerfile restores them.
 export TERM=dumb MANPAGER=cat PAGER=cat
-page=$(man cat); grep -qi concatenate <<<"$page" || fail "man cat"
-page=$(man bash); grep -q echo <<<"$page" || fail "man bash"
+page=$(man cat 2>&1 || true)
+if ! grep -qi concatenate <<<"$page"; then
+  echo "--- man cat printed:"; head -20 <<<"$page"
+  echo "--- cat is:"; readlink -f "$(command -v cat)"; dpkg -S "$(readlink -f "$(command -v cat)")" || true
+  echo "--- packages:"; dpkg -l | grep -E 'coreutils|findutils|diffutils|man-db|manpages' || true
+  echo "--- man pages of section 1:"; ls /usr/share/man/man1 | head -20; ls /usr/share/man/man1 | wc -l
+  fail "man cat"
+fi
+page=$(man bash 2>&1 || true); grep -q echo <<<"$page" || { head -20 <<<"$page"; fail "man bash"; }
 printf 'a\nb\nc\nd\n' | cat > file1
 printf 'e\nf\ng\nh\n' | cat > file2
 cat file1 file2 | cat -n > file3
