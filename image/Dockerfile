@@ -59,8 +59,13 @@ RUN rm -f /etc/dpkg/dpkg.cfg.d/excludes \
         util-linux \
     && rm -f /usr/bin/man \
     && dpkg-divert --quiet --remove --rename /usr/bin/man \
+    && rm -f /usr/bin/pebble \
     && rm -rf /var/lib/apt/lists/*
 
+# (/usr/bin/pebble, removed above, is a Let's Encrypt ACME test server written in Go. It comes in as a dependency of
+# one of the packages, nothing here runs it, and the Trivy scan of the pipeline fails on the open CVEs in its Go
+# standard library. Same reasoning as removing fixuid in Online-IDE.)
+#
 # The platform runs the pod as UID 1000. The base image may ship a default user with that ID: replace it, so that the
 # user has a passwd entry, a name and a home directory.
 RUN (userdel -r ubuntu 2>/dev/null || true) \

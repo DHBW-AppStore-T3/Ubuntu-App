@@ -35,6 +35,11 @@ set -euo pipefail
 fail() { echo "FAIL: $*" >&2; exit 1; }
 cd "$HOME"
 
+# For the record: which package ships /usr/bin/pebble (removed in the Dockerfile) and who depends on it.
+dpkg -S /usr/bin/pebble || true
+dpkg-query -W -f='${Package}: ${Depends} ${Pre-Depends}\n' | grep -w pebble || true
+[ ! -e /usr/bin/pebble ] || fail "pebble is still in the image"
+
 # The platform's context: UID 1000 with a name and a home that is the volume.
 [ "$(id -u)" = 1000 ] || fail "not UID 1000"
 [ "$(whoami)" = student ] || fail "user name is $(whoami)"
