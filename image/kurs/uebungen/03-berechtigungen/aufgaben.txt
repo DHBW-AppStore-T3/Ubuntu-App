@@ -1,0 +1,42 @@
+ÜBUNG 3 – Berechtigungen
+==========================
+
+Aufgabe 1: Rechte lesen
+  Erstelle eine Datei "test.txt" und zeige ihre Berechtigungen an.
+  Was bedeuten die Zeichen in der ersten Spalte?
+  Befehl: touch test.txt && ls -l test.txt
+
+Aufgabe 2: Rechte setzen (numerisch)
+  Setze die Rechte auf:
+  a) 644 — owner lesen+schreiben, alle anderen nur lesen
+  b) 600 — nur der owner darf lesen und schreiben
+  c) 755 — owner alles, alle anderen lesen+ausführen
+  Befehl: chmod 644 test.txt
+
+Aufgabe 3: Skript ausführbar machen
+  Erstelle eine Datei "hallo.sh" mit folgendem Inhalt:
+    #!/bin/bash
+    echo "Hallo, $(whoami)!"
+  Mache sie ausführbar und starte sie.
+  Befehle: nano hallo.sh, chmod +x hallo.sh, ./hallo.sh
+
+Aufgabe 4: Bedeutung von rwx
+  Erkläre in eigenen Worten:
+  -rw-r--r-- 1 alice alice 42 Jan 1 12:00 geheim.txt
+  - Wer darf lesen?
+  - Wer darf schreiben?
+  - Wer darf ausführen?
+
+Aufgabe 5: Zugriff verweigert
+  Du bist ein normaler Benutzer. Finde heraus, was das System dir verbietet.
+  a) Vergleiche die Rechte von /etc/passwd und /etc/shadow.
+  b) Versuche, beide Dateien zu lesen. Was passiert, und warum?
+  c) Versuche, eine Datei /etc/testdatei anzulegen. Was sagt das System?
+  Befehle: ls -l /etc/passwd /etc/shadow, cat /etc/shadow, touch /etc/testdatei, id
+
+Aufgabe 6: Standardrechte mit umask
+  a) Zeige deine umask an und lege eine Datei und einen Ordner an.
+     Vergleiche deren Rechte mit "ls -ld".
+  b) Setze die umask auf 077 und lege eine weitere Datei und einen weiteren
+     Ordner an. Was hat sich geändert?
+  Befehle: umask, touch a.txt, mkdir ordner_a, umask 077, stat a.txt

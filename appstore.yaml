@@ -1,0 +1,26 @@
+# App contract v2: this app runs as pods, not as a VM (the VM version, v1.x, is only available via its git tag).
+# One web terminal per person: a persistent bash session in the browser, no SSH, no sudo.
+apiVersion: appstore/v2
+name: ubuntu-app
+runtime: kubernetes
+scope: user
+workload:
+  containers:
+    - name: terminal
+      # Built by .github/workflows/ci.yml. After changing image/, copy the new digest here. The tag is a placeholder
+      # until the first build has run (then set strict-image-pin: true in ci.yml).
+      image: ghcr.io/dhbw-appstore-t3/apps/ubuntu-app:dev
+      expose: { port: 8080, path: / }
+      # An idle terminal needs a few MiB: reserve little, allow bursts for what students run (pip and npm installs,
+      # compiling, the loops of the exercises).
+      resources: { cpu: "1", memory: 1Gi, requests: { cpu: 50m, memory: 128Mi } }
+      env:
+        - { name: PASSWORD, from: generated-password }
+        - { name: APP_USER, from: user-name }
+      writablePaths: [/tmp]
+  storage: { size: 2Gi, mountPath: /home/student }
+# The reference sheet uses ping and curl; pip and npm install from the internet.
+egress: internet
+access:
+  - { type: url, template: "https://{workload}-{deployment}.{domain}" }
+  - { type: password, from: generated-password, username: "{user}" }
