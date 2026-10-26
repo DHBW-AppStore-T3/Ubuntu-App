@@ -1,12 +1,8 @@
 # Ubuntu Terminal App
  
-Eine einfache Linux-Lernumgebung für Hochschulkurse. Jeder Studierende
-
-bekommt einen eigenen SSH-Zugang auf einer gemeinsamen Ubuntu 26.04 VM
-
-und ein vorgefertigtes Lernverzeichnis mit Übungsaufgaben und Kurzreferenz
-
-zu den wichtigsten Terminal-Befehlen.
+Eine einfache Linux-Lernumgebung für Hochschulkurse: jede Person bekommt ein eigenes Web-Terminal (Bash im Browser,
+Ubuntu 26.04) und ein vorgefertigtes Lernverzeichnis mit Übungsaufgaben und Kurzreferenz zu den wichtigsten
+Terminal-Befehlen.
  
 ## Pod-Version (ab v2.0.0)
 
@@ -46,9 +42,9 @@ einer VM-Variante auf KubeVirt wieder.
   prüfen, hadolint, bauen, Smoke-Test, Trivy, Push nach ghcr.io). Der Smoke-Test (`.github/smoke-test.sh`) startet das Image
   im Sicherheitskontext der Plattform, öffnet echte Terminal-Sitzungen (`.github/test-terminal.py`) und spielt die ersten
   sechs Übungen der Vorlesung (man, cat, echo, wc, sort, uniq, head, Shell-Skripte) durch.
-- Nach einem Build auf `dev` oder `main` den Digest aus der Job-Summary in `appstore.yaml` eintragen und danach
-  `strict-image-pin: true` in `ci.yml` setzen. Das GHCR-Paket muss öffentlich sein, damit der Cluster es ziehen kann.
-- Workflow: Feature-Branch -> PR nach `dev` -> PR von `dev` nach `main` -> Tag `v2.x.y` -> Version im AppStore einreichen.
+- Nach einem Build auf `main` den Digest aus der Job-Summary in `appstore.yaml` eintragen (`ci.yml` verlangt
+  Digests: `strict-image-pin: true`). Das GHCR-Paket muss öffentlich sein, damit der Cluster es ziehen kann.
+- Workflow: Feature-Branch -> PR nach `main` -> Tag `v2.x.y` -> Version im AppStore einreichen.
 
 ## Vorinstallierte Software (VM-Version v1.x)
  
