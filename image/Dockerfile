@@ -62,6 +62,14 @@ RUN rm -f /etc/dpkg/dpkg.cfg.d/excludes \
     && rm -f /usr/bin/pebble \
     && rm -rf /var/lib/apt/lists/*
 
+# Security updates the base image does not have yet, at every CI build: app-ci.yml sets SECURITY_REFRESH to a new
+# value for each run, so the build cache cannot keep an older package state (app-registry README, "Sicherheitsupdates
+# im Image"). After the expensive steps, which stay cached; everything below is rebuilt in each run.
+ARG SECURITY_REFRESH
+RUN apt-get update \
+    && apt-get upgrade -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
 # (/usr/bin/pebble, removed above, is a Go binary that no dpkg package owns ("dpkg -S" finds nothing), so it is not
 # one of our dependencies; it presumably comes with the base image (the name suggests Canonical's Pebble service
 # manager, not verified). Nothing here runs it, and the Trivy scan of the pipeline fails on the open CVEs in its Go
