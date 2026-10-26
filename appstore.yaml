@@ -8,7 +8,7 @@ workload:
   containers:
     - name: terminal
       # Built by .github/workflows/ci.yml. After changing image/, copy the new digest here.
-      image: ghcr.io/dhbw-appstore-t3/apps/ubuntu-app@sha256:5bb31037555cec64f35bafbafd2fadfde27a1cc6c6a5349c93d71ee80221dbdc
+      image: ghcr.io/dhbw-appstore-t3/apps/ubuntu-app@sha256:be0c1aa28c3e4ce46f807556ff8c3732465178b4f7886aa9df58b0b4562f6ca5
       expose: { port: 8080, path: / }
       # An idle terminal needs a few MiB: reserve little, allow bursts for what students run (pip and npm installs,
       # compiling, the loops of the exercises).
