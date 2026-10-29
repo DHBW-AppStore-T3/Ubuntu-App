@@ -17,8 +17,9 @@ bleibt über ihren Git-Tag erreichbar; die Abschnitte weiter unten (ab "Vorinsta
 - **Dateien bleiben erhalten** (Volume mit 2 Gi unter `/home/student`), auch bei Pause und Fortsetzen. Beim ersten Start
   wird `~/linux-kurs/` dorthin kopiert.
 - **Software:** Python 3 (pip, venv), Node.js (npm), git, curl, wget, tree, htop, nano, vim, openssl, net-tools sowie
-  Handbuchseiten (`man`, `info`), `ps`, `top`, `ip`, `ping` und `gawk`.
-- **Internetzugang** (`egress: internet`) für `curl`, `ping`, `pip` und `npm`.
+  Handbuchseiten (`man`, `info`), `ps`, `top`, `ip` und `gawk`.
+- **Internetzugang** (`network.internet`, startet **aus**, die Lehrperson schaltet ihn im Wizard ein) für `curl`, `pip` und `npm`; nur TCP 80/443, also kein `ping`. Die Übungen brauchen ihn nicht.
+- **Pod-Netz** (`network.podNetwork`, startet aus): eigene TCP-/UDP-Server und -Clients zwischen den Terminals eines Deployments, unter dem Namen des Terminals (`<workload>`) und alle zusammen unter `peers`.
 
 Unterschiede zur VM-Version:
 
