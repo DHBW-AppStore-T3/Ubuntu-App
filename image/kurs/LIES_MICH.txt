@@ -88,7 +88,7 @@ Du arbeitest hier als normaler Benutzer ohne Administratorrechte (kein sudo).
  7. NETZWERK & SYSTEM
 ──────────────────────────────────────────────────────────────────────────────
   ip a                 Netzwerkinterfaces und IP-Adressen
-  ping google.com      Verbindungstest
+  curl -I https://example.org   Verbindungstest (nur mit Internetzugang; kein ping)
   curl https://...     URL abrufen
   df -h                Festplattennutzung
   du -sh ordner/       Ordnergröße

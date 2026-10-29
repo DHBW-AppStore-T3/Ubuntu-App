@@ -18,8 +18,12 @@ workload:
         - { name: APP_USER, from: user-name }
       writablePaths: [/tmp]
   storage: { size: 2Gi, mountPath: /home/student }
-# The reference sheet uses ping and curl; pip and npm install from the internet.
-egress: internet
+# What the terminal may reach (the contract: app-registry README, "network"). The course exercises work offline; the
+# internet is only for curl, pip and npm, so it starts off and a teacher switches it on where a course needs it.
+# Students' own TCP/UDP servers and clients between the terminals of one deployment: a choice, off by default.
+network:
+  internet: { allowed: true, default: false }
+  podNetwork: { allowed: true, default: false }
 access:
   - { type: url, template: "https://{workload}-{deployment}.{domain}" }
   - { type: password, from: generated-password, username: "{user}" }
