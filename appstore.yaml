@@ -4,6 +4,7 @@ apiVersion: appstore/v2
 name: ubuntu-app
 runtime: kubernetes
 scope: user
+scopeChoice: true
 workload:
   containers:
     - name: terminal
