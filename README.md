@@ -9,7 +9,8 @@ Terminal-Befehlen.
 Ab `v2.0.0` läuft die App als Pod (`appstore.yaml`, Image unter `image/`), nicht mehr als VM. Die VM-Version (`v1.x`)
 bleibt über ihren Git-Tag erreichbar; die Abschnitte weiter unten (ab "Vorinstallierte Software") beschreiben sie.
 
-- **Ein Web-Terminal pro Person** (`scope: user`): eine Bash-Sitzung im Browser (ttyd), kein SSH. Die Adresse und das
+- **Ein Web-Terminal pro Person** (`scope: user`, Standard; mit `scopeChoice: true` kann die Lehrperson im Wizard
+  stattdessen ein gemeinsames Terminal je Gruppe wählen): eine Bash-Sitzung im Browser (ttyd), kein SSH. Die Adresse und das
   Passwort stehen unter "Meine Zugänge".
 - **Die Sitzung überlebt das Schließen des Tabs** (dtach): Seite neu öffnen, und Hintergrundprozesse und
   Arbeitsverzeichnis sind noch da. `https://<adresse>/?arg=2` öffnet ein zweites, unabhängiges Terminal (z. B. für
